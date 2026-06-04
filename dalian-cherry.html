@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大连红颗粒樱桃合作社 — 产地直供·全程品控</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #c0392b;
+  --red-dark: #922b21;
+  --red-light: #f5b7b1;
+  --green: #27ae60;
+  --green-dark: #1e8449;
+  --green-light: #a9dfbf;
+  --cream: #fdfaf6;
+  --white: #ffffff;
+  --gray: #6c757d;
+  --gray-light: #f8f9fa;
+  --text: #1a1a1a;
+  --text-muted: #555;
+  --serif: 'Noto Serif SC', serif;
+  --sans: 'Noto Sans SC', sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--text);background:var(--cream);overflow-x:hidden}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(253,250,246,0.95);backdrop-filter:blur(8px);border-bottom:1px solid rgba(192,57,43,0.15);padding:0 5vw}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--red);letter-spacing:0.05em}
+.brand span{color:var(--green)}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{text-decoration:none;font-size:14px;color:var(--text-muted);transition:color .2s}
+.nav-links a:hover{color:var(--red)}
+.nav-cta{background:var(--red);color:#fff;padding:8px 20px;border-radius:4px;font-size:14px;text-decoration:none;font-weight:500;transition:background .2s}
+.nav-cta:hover{background:var(--red-dark)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
+
+/* HERO */
+.hero{position:relative;min-height:90vh;display:flex;align-items:center;overflow:hidden;background:#1a0a08}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%, rgba(192,57,43,0.35) 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, rgba(39,174,96,0.2) 0%, transparent 50%)}
+.hero-pattern{position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:20px 20px}
+.hero-content{position:relative;z-index:2;padding:60px 5vw;max-width:660px}
+.season-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(192,57,43,0.25);border:1px solid rgba(192,57,43,0.5);color:#f5b7b1;padding:6px 14px;border-radius:20px;font-size:13px;margin-bottom:28px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+.hero h1{font-family:var(--serif);font-size:clamp(32px,5vw,58px);font-weight:700;color:#fff;line-height:1.25;margin-bottom:20px}
+.hero h1 em{color:var(--red-light);font-style:normal}
+.hero p{font-size:16px;color:rgba(255,255,255,0.7);line-height:1.8;margin-bottom:36px;max-width:500px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn-red{background:var(--red);color:#fff;padding:14px 28px;border-radius:4px;font-size:15px;text-decoration:none;font-weight:500;border:none;cursor:pointer;transition:all .2s}
+.btn-red:hover{background:var(--red-dark);transform:translateY(-1px)}
+.btn-outline-white{background:transparent;color:#fff;padding:14px 28px;border-radius:4px;font-size:15px;text-decoration:none;border:1px solid rgba(255,255,255,0.4);cursor:pointer;transition:all .2s}
+.btn-outline-white:hover{background:rgba(255,255,255,0.1)}
+.hero-stats{position:absolute;bottom:40px;right:5vw;display:flex;gap:32px;z-index:2}
+.hero-stat{text-align:right;color:#fff}
+.hero-stat-n{font-family:var(--serif);font-size:32px;font-weight:700;color:var(--red-light)}
+.hero-stat-l{font-size:12px;color:rgba(255,255,255,0.6);margin-top:2px}
+
+/* SEASON BAR */
+.season-bar{background:var(--green);color:#fff;padding:14px 5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.season-bar-text{font-size:14px;font-weight:500}
+.season-bar-detail{font-size:13px;opacity:.85}
+.season-progress{display:flex;align-items:center;gap:10px;font-size:13px}
+.progress-track{width:160px;height:6px;background:rgba(255,255,255,0.3);border-radius:3px}
+.progress-fill{height:100%;width:35%;background:#fff;border-radius:3px}
+
+/* SECTION */
+section{padding:80px 5vw}
+.sec-label{font-size:12px;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);font-weight:500;margin-bottom:10px}
+.sec-title{font-family:var(--serif);font-size:clamp(24px,3.5vw,38px);font-weight:700;color:var(--text);margin-bottom:14px}
+.sec-sub{font-size:15px;color:var(--text-muted);line-height:1.7;max-width:560px}
+.sec-header{margin-bottom:48px}
+.divider{width:48px;height:3px;background:var(--red);margin:16px 0}
+
+/* BUSINESS CARDS */
+.biz-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.biz-card{background:#fff;border-radius:8px;padding:32px 28px;border:1px solid rgba(0,0,0,0.06);transition:all .3s;cursor:pointer;position:relative;overflow:hidden}
+.biz-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--red);transform:scaleY(0);transition:.3s;transform-origin:bottom}
+.biz-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(192,57,43,0.1)}
+.biz-card:hover::before{transform:scaleY(1)}
+.biz-icon{width:52px;height:52px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px}
+.biz-icon.red{background:#fdf2f1}
+.biz-icon.green{background:#eafaf1}
+.biz-card h3{font-family:var(--serif);font-size:18px;font-weight:700;margin-bottom:10px}
+.biz-card p{font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:18px}
+.biz-tags{display:flex;gap:6px;flex-wrap:wrap}
+.biz-tag{font-size:12px;padding:3px 10px;border-radius:20px;background:var(--gray-light);color:var(--gray)}
+.biz-link{font-size:13px;color:var(--red);font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-top:14px}
+
+/* PRODUCTS */
+.products-bg{background:#fff}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+.product-card{border-radius:8px;overflow:hidden;border:1px solid rgba(0,0,0,0.08);transition:all .3s;background:#fff}
+.product-card:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.1)}
+.product-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:64px;position:relative}
+.product-img.p1{background:linear-gradient(135deg,#fdf2f1,#fae5e3)}
+.product-img.p2{background:linear-gradient(135deg,#fce4ec,#f8bbd0)}
+.product-img.p3{background:linear-gradient(135deg,#fdf2f1,#f5b7b1)}
+.product-img.p4{background:linear-gradient(135deg,#fff8e1,#ffecb3)}
+.product-img.p5{background:linear-gradient(135deg,#fbe9e7,#ffccbc)}
+.product-img.p6{background:linear-gradient(135deg,#e8f5e9,#c8e6c9)}
+.product-badge{position:absolute;top:12px;right:12px;background:var(--red);color:#fff;font-size:11px;padding:3px 8px;border-radius:3px}
+.product-badge.green{background:var(--green)}
+.product-body{padding:16px}
+.product-name{font-weight:500;font-size:15px;margin-bottom:4px}
+.product-origin{font-size:12px;color:var(--text-muted);margin-bottom:8px}
+.product-specs{font-size:12px;color:var(--gray);line-height:1.7;margin-bottom:10px}
+.product-price{font-family:var(--serif);font-size:18px;color:var(--red);font-weight:700}
+.product-price span{font-size:12px;font-weight:400;color:var(--gray)}
+.product-btns{display:flex;gap:8px;margin-top:12px}
+.btn-sm-red{flex:1;background:var(--red);color:#fff;border:none;padding:8px;border-radius:4px;font-size:13px;cursor:pointer;transition:.2s}
+.btn-sm-red:hover{background:var(--red-dark)}
+.btn-sm-outline{flex:1;background:transparent;color:var(--red);border:1px solid var(--red);padding:8px;border-radius:4px;font-size:13px;cursor:pointer;transition:.2s}
+.btn-sm-outline:hover{background:#fdf2f1}
+
+/* ORIGIN */
+.origin-section{background:var(--text);color:#fff}
+.origin-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.origin-content .sec-label{color:var(--green-light)}
+.origin-content .sec-title{color:#fff}
+.origin-content .sec-sub{color:rgba(255,255,255,0.65)}
+.origin-content .divider{background:var(--green)}
+.origin-facts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px}
+.origin-fact{background:rgba(255,255,255,0.06);border-radius:6px;padding:16px}
+.origin-fact-n{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--green-light)}
+.origin-fact-l{font-size:12px;color:rgba(255,255,255,0.55);margin-top:4px}
+.origin-visual{background:rgba(255,255,255,0.04);border-radius:12px;padding:40px;display:flex;flex-direction:column;gap:16px}
+.origin-row{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.06);border-radius:8px;padding:14px 16px}
+.origin-row-icon{font-size:22px;width:42px;text-align:center}
+.origin-row-text h4{font-size:14px;font-weight:500;color:#fff;margin-bottom:3px}
+.origin-row-text p{font-size:12px;color:rgba(255,255,255,0.5)}
+
+/* LOGISTICS */
+.logistics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.logistics-card{background:#fff;border-radius:8px;padding:24px 20px;border:1px solid rgba(0,0,0,0.06);text-align:center}
+.logistics-icon{font-size:32px;margin-bottom:14px}
+.logistics-card h4{font-size:15px;font-weight:500;margin-bottom:8px}
+.logistics-card p{font-size:13px;color:var(--text-muted);line-height:1.6}
+
+/* REVIEWS */
+.reviews-section{background:var(--gray-light)}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.review-card{background:#fff;border-radius:8px;padding:24px;border:1px solid rgba(0,0,0,0.06)}
+.review-stars{color:var(--red);font-size:14px;margin-bottom:12px}
+.review-text{font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:16px;font-style:italic}
+.review-author{display:flex;align-items:center;gap:10px}
+.review-avatar{width:36px;height:36px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500}
+.review-avatar.green{background:var(--green)}
+.review-name{font-size:13px;font-weight:500}
+.review-role{font-size:12px;color:var(--gray)}
+.partners{display:flex;flex-wrap:wrap;gap:16px;margin-top:48px;align-items:center}
+.partner-logo{height:44px;padding:8px 20px;background:#fff;border-radius:6px;border:1px solid rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--gray);font-weight:500}
+
+/* CONTACT FORM */
+.contact-section{background:#fff}
+.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:60px;align-items:start}
+.contact-info{padding-top:8px}
+.contact-info h3{font-family:var(--serif);font-size:22px;font-weight:700;margin-bottom:20px}
+.contact-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:20px}
+.contact-item-icon{width:40px;height:40px;border-radius:8px;background:#fdf2f1;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.contact-item-text h4{font-size:14px;font-weight:500;margin-bottom:3px}
+.contact-item-text p{font-size:13px;color:var(--text-muted)}
+.contact-item-text a{color:var(--red);text-decoration:none}
+form{background:var(--cream);border-radius:10px;padding:32px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.form-group{margin-bottom:14px}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:var(--text)}
+input,select,textarea{width:100%;padding:10px 14px;border:1px solid rgba(0,0,0,0.12);border-radius:6px;font-size:14px;font-family:var(--sans);background:#fff;color:var(--text);transition:border .2s;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--red)}
+textarea{resize:vertical;min-height:100px}
+.form-submit{width:100%;padding:14px;background:var(--red);color:#fff;border:none;border-radius:6px;font-size:15px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:background .2s;margin-top:6px}
+.form-submit:hover{background:var(--red-dark)}
+.required{color:var(--red)}
+
+/* FOOTER */
+footer{background:#111;color:#fff;padding:60px 5vw 30px}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-brand{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--red-light);margin-bottom:12px}
+.footer-desc{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7}
+.footer-col h4{font-size:14px;font-weight:500;margin-bottom:16px;color:rgba(255,255,255,0.8)}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:10px}
+.footer-col a{font-size:13px;color:rgba(255,255,255,0.45);text-decoration:none;transition:color .2s}
+.footer-col a:hover{color:var(--red-light)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:12px;color:rgba(255,255,255,0.3)}
+.icp{font-size:12px;color:rgba(255,255,255,0.25)}
+
+/* FLOAT BTN */
+.float-contact{position:fixed;bottom:28px;right:24px;z-index:200;display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+.float-btn{display:flex;align-items:center;gap:8px;background:var(--red);color:#fff;padding:10px 16px;border-radius:28px;font-size:13px;font-weight:500;cursor:pointer;border:none;box-shadow:0 4px 20px rgba(192,57,43,0.4);transition:all .2s;text-decoration:none}
+.float-btn:hover{background:var(--red-dark);transform:translateY(-1px)}
+.float-btn.green{background:var(--green);box-shadow:0 4px 20px rgba(39,174,96,0.4)}
+.float-btn.green:hover{background:var(--green-dark)}
+
+/* MOBILE */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero-stats{position:relative;bottom:auto;right:auto;justify-content:flex-start;margin-top:40px;flex-wrap:wrap;gap:20px}
+  .hero-stat{text-align:left}
+  section{padding:56px 5vw}
+  .origin-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .form-row{grid-template-columns:1fr}
+  .float-contact{bottom:20px;right:16px}
+}
+@media(max-width:480px){
+  .footer-grid{grid-template-columns:1fr}
+  .hero h1{font-size:28px}
+}
+
+/* ANIMATIONS */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="brand">大连红颗粒 <span>樱桃合作社</span></div>
+    <ul class="nav-links">
+      <li><a href="#business">业务服务</a></li>
+      <li><a href="#products">产品中心</a></li>
+      <li><a href="#origin">产地溯源</a></li>
+      <li><a href="#logistics">物流售后</a></li>
+      <li><a href="#reviews">客户评价</a></li>
+      <li><a href="#contact">联系我们</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">立即咨询</a>
+    <div class="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-content">
+    <div class="season-badge">🍒 2025季预售已开启 · 5月底预计上市</div>
+    <h1>大连产地直供<br><em>优质樱桃</em><br>一件起发 批量优惠</h1>
+    <p>深耕大连樱桃产业20余年，覆盖一件代发、代采批发、衍生产品全产业链，为电商卖家、商超批发、礼品定制提供专业解决方案。</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-red">免费咨询报价</a>
+      <a href="#business" class="btn-outline-white">了解业务服务</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-n">20+</div>
+        <div class="hero-stat-l">年种植经验</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-n">500亩</div>
+        <div class="hero-stat-l">自有基地</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-n">3000+</div>
+        <div class="hero-stat-l">合作商家</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEASON BAR -->
+<div class="season-bar">
+  <div>
+    <div class="season-bar-text">🗓️ 2025年大连樱桃成熟周期</div>
+    <div class="season-bar-detail">美早：5月底 → 萨米脱：6月中旬 → 拉宾斯：6月下旬 → 晚红珠：7月初</div>
+  </div>
+  <div class="season-progress">
+    <span>距美早上市</span>
+    <div class="progress-track"><div class="progress-fill"></div></div>
+    <span>约35天</span>
+  </div>
+</div>
+
+<!-- BUSINESS -->
+<section id="business">
+  <div class="sec-header fade-in">
+    <div class="sec-label">核心业务</div>
+    <h2 class="sec-title">四大服务 · 覆盖全渠道需求</h2>
+    <div class="divider"></div>
+    <p class="sec-sub">无论您是电商卖家、商超采购，还是大型经销商，我们都有专属解决方案。</p>
+  </div>
+  <div class="biz-grid">
+    <div class="biz-card fade-in">
+      <div class="biz-icon red">📦</div>
+      <h3>樱桃一件代发</h3>
+      <p>专为电商卖家、个体创业者设计。一件起发，全程代打包发货，顺丰/极兔多渠道发货，48小时内出库。</p>
+      <div class="biz-tags">
+        <span class="biz-tag">1件起发</span>
+        <span class="biz-tag">代打包</span>
+        <span class="biz-tag">顺丰优先</span>
+        <span class="biz-tag">48h发货</span>
+      </div>
+      <a href="#contact" class="biz-link">了解详情 →</a>
+    </div>
+    <div class="biz-card fade-in">
+      <div class="biz-icon green">🔍</div>
+      <h3>樱桃代采服务</h3>
+      <p>针对商超、批发市场。产地直采，专业品质筛选，按需定制采摘标准，可按客户要求定制规格、糖度等指标。</p>
+      <div class="biz-tags">
+        <span class="biz-tag">产地直采</span>
+        <span class="biz-tag">品质筛选</span>
+        <span class="biz-tag">按需定制</span>
+        <span class="biz-tag">检测报告</span>
+      </div>
+      <a href="#contact" class="biz-link">了解详情 →</a>
+    </div>
+    <div class="biz-card fade-in">
+      <div class="biz-icon red">🚚</div>
+      <h3>樱桃批发供货</h3>
+      <p>面向大型经销商、商超连锁。批量供货能力强，价格梯度灵活，稳定供货周期，支持长期框架协议合作。</p>
+      <div class="biz-tags">
+        <span class="biz-tag">阶梯报价</span>
+        <span class="biz-tag">稳定供货</span>
+        <span class="biz-tag">框架合作</span>
+        <span class="biz-tag">专属账期</span>
+      </div>
+      <a href="#contact" class="biz-link">了解详情 →</a>
+    </div>
+    <div class="biz-card fade-in">
+      <div class="biz-icon green">🍰</div>
+      <h3>樱桃衍生产品</h3>
+      <p>自研樱桃饼、樱桃酒等特色产品，传统工艺结合现代加工，精美礼盒包装，适合节礼、旅游纪念品市场。</p>
+      <div class="biz-tags">
+        <span class="biz-tag">樱桃酒</span>
+        <span class="biz-tag">樱桃饼</span>
+        <span class="biz-tag">礼盒定制</span>
+        <span class="biz-tag">OEM代工</span>
+      </div>
+      <a href="#contact" class="biz-link">了解详情 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products" class="products-bg">
+  <div class="sec-header fade-in">
+    <div class="sec-label">产品中心</div>
+    <h2 class="sec-title">优质品种 · 产地直供</h2>
+    <div class="divider"></div>
+    <p class="sec-sub">严选大连本地优势品种，从基地到餐桌全程溯源，每一颗都经专业品控。</p>
+  </div>
+  <div class="products-grid">
+    <div class="product-card fade-in">
+      <div class="product-img p1">🍒<div class="product-badge">当季热销</div></div>
+      <div class="product-body">
+        <div class="product-name">美早樱桃</div>
+        <div class="product-origin">📍 大连旅顺口区基地</div>
+        <div class="product-specs">上市期：5月底<br>规格：28–34mm · 糖度≥18°Bx<br>包装：2斤/盒、5斤/箱起批</div>
+        <div class="product-price">¥35<span>/斤起（批量更优）</span></div>
+        <div class="product-btns">
+          <button class="btn-sm-red" onclick="scrollContact()">询价</button>
+          <button class="btn-sm-outline">溯源</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card fade-in">
+      <div class="product-img p2">🍒<div class="product-badge">精品推荐</div></div>
+      <div class="product-body">
+        <div class="product-name">萨米脱</div>
+        <div class="product-origin">📍 大连金州区基地</div>
+        <div class="product-specs">上市期：6月中旬<br>规格：30–36mm · 糖度≥20°Bx<br>包装：2斤/盒、10斤/箱起批</div>
+        <div class="product-price">¥45<span>/斤起（批量更优）</span></div>
+        <div class="product-btns">
+          <button class="btn-sm-red" onclick="scrollContact()">询价</button>
+          <button class="btn-sm-outline">溯源</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card fade-in">
+      <div class="product-img p3">🍒</div>
+      <div class="product-body">
+        <div class="product-name">拉宾斯</div>
+        <div class="product-origin">📍 大连普兰店区基地</div>
+        <div class="product-specs">上市期：6月下旬<br>规格：26–32mm · 糖度≥17°Bx<br>包装：2斤/盒、5斤/箱起批</div>
+        <div class="product-price">¥28<span>/斤起（批量更优）</span></div>
+        <div class="product-btns">
+          <button class="btn-sm-red" onclick="scrollContact()">询价</button>
+          <button class="btn-sm-outline">溯源</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card fade-in">
+      <div class="product-img p4">🎂<div class="product-badge green">衍生产品</div></div>
+      <div class="product-body">
+        <div class="product-name">大连樱桃饼</div>
+        <div class="product-origin">📍 自有工厂加工</div>
+        <div class="product-specs">口味：原味/蜜渍/酸甜<br>规格：200g/盒、礼盒12枚装<br>保质期：180天</div>
+        <div class="product-price">¥68<span>/盒（礼盒定制另议）</span></div>
+        <div class="product-btns">
+          <button class="btn-sm-red" onclick="scrollContact()">询价</button>
+          <button class="btn-sm-outline">详情</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card fade-in">
+      <div class="product-img p5">🍷<div class="product-badge green">衍生产品</div></div>
+      <div class="product-body">
+        <div class="product-name">大连樱桃酒</div>
+        <div class="product-origin">📍 自有酒庄酿造</div>
+        <div class="product-specs">酒精度：8–12%vol<br>规格：375ml/500ml<br>款式：干红/甜型/起泡</div>
+        <div class="product-price">¥128<span>/瓶（整箱优惠）</span></div>
+        <div class="product-btns">
+          <button class="btn-sm-red" onclick="scrollContact()">询价</button>
+          <button class="btn-sm-outline">详情</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card fade-in">
+      <div class="product-img p6">🎁<div class="product-badge green">礼品定制</div></div>
+      <div class="product-body">
+        <div class="product-name">企业礼盒定制</div>
+        <div class="product-origin">📍 全品类自由搭配</div>
+        <div class="product-specs">支持：Logo印刷、个性化设计<br>起订：50盒<br>交期：7个工作日</div>
+        <div class="product-price">面议<span>（欢迎来样定制）</span></div>
+        <div class="product-btns">
+          <button class="btn-sm-red" onclick="scrollContact()">获取方案</button>
+          <button class="btn-sm-outline">案例</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORIGIN -->
+<section id="origin" class="origin-section">
+  <div class="origin-grid">
+    <div class="origin-content fade-in">
+      <div class="sec-label">产地溯源</div>
+      <h2 class="sec-title">大连 · 中国樱桃之乡</h2>
+      <div class="divider"></div>
+      <p class="sec-sub" style="color:rgba(255,255,255,0.65)">大连地处黄渤海之滨，独特的海洋性气候、昼夜温差大、光照充足，造就了樱桃独特的高糖度和饱满果肉。我们的基地从土壤检测到采后冷链，全链路可追溯。</p>
+      <div class="origin-facts">
+        <div class="origin-fact">
+          <div class="origin-fact-n">500亩</div>
+          <div class="origin-fact-l">自有种植基地</div>
+        </div>
+        <div class="origin-fact">
+          <div class="origin-fact-n">20年+</div>
+          <div class="origin-fact-l">种植管理经验</div>
+        </div>
+        <div class="origin-fact">
+          <div class="origin-fact-n">≥18°Bx</div>
+          <div class="origin-fact-l">平均糖度标准</div>
+        </div>
+        <div class="origin-fact">
+          <div class="origin-fact-n">0农残</div>
+          <div class="origin-fact-l">绿色认证检测</div>
+        </div>
+      </div>
+    </div>
+    <div class="origin-visual fade-in">
+      <div class="origin-row">
+        <div class="origin-row-icon">🌱</div>
+        <div class="origin-row-text">
+          <h4>有机种植管理</h4>
+          <p>全程有机肥，绑枝修剪，精细化田间管理</p>
+        </div>
+      </div>
+      <div class="origin-row">
+        <div class="origin-row-icon">🔬</div>
+        <div class="origin-row-text">
+          <h4>出园质检</h4>
+          <p>糖度、果径、农残三项标准检测，不达标不出园</p>
+        </div>
+      </div>
+      <div class="origin-row">
+        <div class="origin-row-icon">❄️</div>
+        <div class="origin-row-text">
+          <h4>产地预冷</h4>
+          <p>采摘后2小时内进入0–4℃冷库预冷保鲜</p>
+        </div>
+      </div>
+      <div class="origin-row">
+        <div class="origin-row-icon">📦</div>
+        <div class="origin-row-text">
+          <h4>冷链分拣包装</h4>
+          <p>恒温车间人工分拣，定制包装，保持新鲜度</p>
+        </div>
+      </div>
+      <div class="origin-row">
+        <div class="origin-row-icon">🚚</div>
+        <div class="origin-row-text">
+          <h4>全程冷链配送</h4>
+          <p>冷链专车发货，保温泡沫箱+冰袋，覆盖全国</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGISTICS -->
+<section id="logistics">
+  <div class="sec-header fade-in">
+    <div class="sec-label">物流与售后</div>
+    <h2 class="sec-title">全程保障 · 安心收货</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="logistics-grid">
+    <div class="logistics-card fade-in">
+      <div class="logistics-icon">⚡</div>
+      <h4>48小时发货</h4>
+      <p>下单后48小时内发货，旺季高峰期最长72小时，提前告知</p>
+    </div>
+    <div class="logistics-card fade-in">
+      <div class="logistics-icon">❄️</div>
+      <h4>全程冷链</h4>
+      <p>顺丰冷链/极兔冷链可选，保温泡沫箱+充足冰袋，到货新鲜</p>
+    </div>
+    <div class="logistics-card fade-in">
+      <div class="logistics-icon">📍</div>
+      <h4>实时追踪</h4>
+      <p>每单提供快递单号，微信/短信实时推送物流节点</p>
+    </div>
+    <div class="logistics-card fade-in">
+      <div class="logistics-icon">🛡️</div>
+      <h4>到货保障</h4>
+      <p>到货腐损率≤5%理赔，超出则按实际损失补发或退款</p>
+    </div>
+    <div class="logistics-card fade-in">
+      <div class="logistics-icon">🔄</div>
+      <h4>售后响应</h4>
+      <p>收货24小时内反馈问题均可处理，7×12小时在线客服</p>
+    </div>
+    <div class="logistics-card fade-in">
+      <div class="logistics-icon">📋</div>
+      <h4>质检报告</h4>
+      <p>每批次配备检测报告，可提供农残、糖度等检测数据</p>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews" class="reviews-section">
+  <div class="sec-header fade-in">
+    <div class="sec-label">客户评价</div>
+    <h2 class="sec-title">3000+ 合作商家的选择</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card fade-in">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">合作三年了，每年都稳定供货，美早品质特别好，我们拼多多店铺好评率一直在98%以上，顾客反馈很好。</div>
+      <div class="review-author">
+        <div class="review-avatar">张</div>
+        <div>
+          <div class="review-name">张老板</div>
+          <div class="review-role">拼多多电商卖家 · 年采购5吨+</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card fade-in">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">我们超市每年旺季都从这边进货，代采服务很专业，按我们的规格标准来的，损耗很低，价格也有竞争力。</div>
+      <div class="review-author">
+        <div class="review-avatar green">李</div>
+        <div>
+          <div class="review-name">李采购</div>
+          <div class="review-role">连锁商超采购负责人</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card fade-in">
+      <div class="review-stars">★★★★☆</div>
+      <div class="review-text">一件代发非常方便，我刚做水果副业，零基础起步，他们帮我打包发货省了很多精力，售后也好。</div>
+      <div class="review-author">
+        <div class="review-avatar">王</div>
+        <div>
+          <div class="review-name">王同学</div>
+          <div class="review-role">兼职电商创业者</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p style="font-size:13px;color:var(--gray);margin-top:36px;margin-bottom:14px">合作品牌商家</p>
+    <div class="partners">
+      <div class="partner-logo">盒马鲜生</div>
+      <div class="partner-logo">大润发</div>
+      <div class="partner-logo">永辉超市</div>
+      <div class="partner-logo">美团优选</div>
+      <div class="partner-logo">拼多多官方</div>
+      <div class="partner-logo">京东物流</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="sec-header fade-in">
+    <div class="sec-label">联系我们</div>
+    <h2 class="sec-title">提交需求 · 快速报价</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-info fade-in">
+      <h3>多渠道联系方式</h3>
+      <div class="contact-item">
+        <div class="contact-item-icon">📞</div>
+        <div class="contact-item-text">
+          <h4>销售热线</h4>
+          <p><a href="tel:04110000000">0411-XXXX-XXXX</a>（7×12小时）</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">💬</div>
+        <div class="contact-item-text">
+          <h4>微信咨询</h4>
+          <p>扫码或搜索：dalian-cherry2025</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">📧</div>
+        <div class="contact-item-text">
+          <h4>邮件联系</h4>
+          <p><a href="mailto:sales@dlcherry.cn">sales@dlcherry.cn</a></p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">📍</div>
+        <div class="contact-item-text">
+          <h4>基地地址</h4>
+          <p>辽宁省大连市旅顺口区樱桃产业园区</p>
+        </div>
+      </div>
+    </div>
+    <div class="fade-in">
+      <form onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>姓名 <span class="required">*</span></label>
+            <input type="text" placeholder="您的姓名" required>
+          </div>
+          <div class="form-group">
+            <label>联系电话 <span class="required">*</span></label>
+            <input type="tel" placeholder="手机号码" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>业务类型 <span class="required">*</span></label>
+          <select required>
+            <option value="">请选择业务类型</option>
+            <option>一件代发（电商/个人）</option>
+            <option>代采服务（商超/批发商）</option>
+            <option>批量批发（大型经销商）</option>
+            <option>衍生产品（樱桃酒/樱桃饼）</option>
+            <option>企业礼品定制</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>采购量</label>
+            <input type="text" placeholder="如：100斤/月">
+          </div>
+          <div class="form-group">
+            <label>预计合作时间</label>
+            <input type="text" placeholder="如：6月初">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>详细需求</label>
+          <textarea placeholder="请描述您的具体需求，如品种、规格、包装要求等，方便我们为您定制报价方案…"></textarea>
+        </div>
+        <button type="submit" class="form-submit">提交需求 · 免费获取报价方案</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">大连红颗粒樱桃合作社</div>
+      <div class="footer-desc">深耕大连樱桃产业20余年，专注一件代发、代采批发、衍生产品全产业链服务，覆盖全国3000+合作商家。</div>
+    </div>
+    <div class="footer-col">
+      <h4>核心业务</h4>
+      <ul>
+        <li><a href="#business">一件代发</a></li>
+        <li><a href="#business">代采服务</a></li>
+        <li><a href="#business">批量批发</a></li>
+        <li><a href="#business">衍生产品</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>产品中心</h4>
+      <ul>
+        <li><a href="#products">美早樱桃</a></li>
+        <li><a href="#products">萨米脱</a></li>
+        <li><a href="#products">拉宾斯</a></li>
+        <li><a href="#products">樱桃酒/樱桃饼</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>快速通道</h4>
+      <ul>
+        <li><a href="#origin">产地溯源</a></li>
+        <li><a href="#logistics">物流说明</a></li>
+        <li><a href="#reviews">客户评价</a></li>
+        <li><a href="#contact">在线咨询</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 大连红颗粒樱桃合作社 · 保留所有权利</div>
+    <div class="icp">辽ICP备XXXXXXXX号 · 辽公网安备XXXXXXXX号</div>
+  </div>
+</footer>
+
+<!-- FLOAT -->
+<div class="float-contact">
+  <a href="tel:04110000000" class="float-btn green">📞 电话咨询</a>
+  <a href="#contact" class="float-btn">💬 在线询价</a>
+</div>
+
+<script>
+// Scroll animations
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') });
+}, {threshold: 0.1});
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Form submit
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = '✓ 提交成功！我们将在1小时内联系您';
+  btn.style.background = '#27ae60';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = '提交需求 · 免费获取报价方案';
+    btn.style.background = '';
+    btn.disabled = false;
+    e.target.reset();
+  }, 4000);
+}
+
+// Scroll to contact
+function scrollContact() {
+  document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
