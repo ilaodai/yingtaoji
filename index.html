@@ -3,439 +3,1466 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大连樱桃全产业链平台 - 产地直供 | 代发 | 代采 | 批发</title>
+    <title>大连樱桃 - 全产业链供应平台</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind 配置 -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        cherry: '#C72C41',    // 樱桃红
-                        fresh: '#2E8B57',      // 自然绿
-                        light: '#F8F9FA',      // 浅灰背景
-                        dark: '#333333'        // 主文字
+                        cherry: {
+                            red: '#E63946',
+                            lightRed: '#FF6B6B',
+                            darkRed: '#C1121F',
+                            green: '#4CC9F0',
+                            lightGreen: '#4895EF',
+                            darkGreen: '#1D3557',
+                            beige: '#F1FAEE',
+                            gold: '#F7B733'
+                        }
                     },
                     fontFamily: {
-                        sans: ['system-ui', 'sans-serif']
-                    }
+                        inter: ['Inter', 'sans-serif'],
+                    },
                 }
             }
         }
     </script>
+    
     <style type="text/tailwindcss">
         @layer utilities {
             .content-auto {
                 content-visibility: auto;
             }
-            .shadow-cherry {
-                box-shadow: 0 4px 20px rgba(199,44,65,0.15);
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             }
-            .bg-gradient-cherry {
-                background: linear-gradient(135deg, #C72C41, #E84A5F);
+            .card-hover {
+                transition: all 0.3s ease;
             }
-            .scroll-smooth {
-                scroll-behavior: smooth;
+            .card-hover:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+            }
+            .scroll-indicator {
+                height: 3px;
+                background-color: theme('colors.cherry.red');
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 50;
+                width: 0%;
             }
         }
     </style>
 </head>
-<body class="bg-white text-dark scroll-smooth">
-<!-- 季节性提示栏 -->
-<div class="bg-cherry text-white text-center py-2 text-sm font-medium">
-    <i class="fa fa-bell-o mr-1"></i> 大连樱桃成熟期：6月上旬-7月上旬 | 现火热预售中，产地直发，坏果包赔！
-</div>
+<body class="font-inter bg-white text-gray-800 overflow-x-hidden">
+    <!-- 滚动进度指示器 -->
+    <div id="scrollIndicator" class="scroll-indicator"></div>
 
-<!-- 导航栏 -->
-<header class="sticky top-0 bg-white shadow-md z-50">
-    <div class="container mx-auto px-4 md:px-6">
-        <div class="flex items-center justify-between h-16">
-            <a href="#" class="flex items-center gap-2">
-                <i class="fa fa-leaf text-cherry text-2xl"></i>
-                <span class="text-xl font-bold text-cherry">大连樱桃产业链</span>
-            </a>
-            
-            <!-- 桌面导航 -->
-            <nav class="hidden md:flex gap-6">
-                <a href="#home" class="font-medium hover:text-cherry transition">首页</a>
-                <a href="#business" class="font-medium hover:text-cherry transition">核心业务</a>
-                <a href="#products" class="font-medium hover:text-cherry transition">产品中心</a>
-                <a href="#origin" class="font-medium hover:text-cherry transition">产地实力</a>
-                <a href="#service" class="font-medium hover:text-cherry transition">物流售后</a>
-                <a href="#contact" class="font-medium hover:text-cherry transition">合作咨询</a>
-            </nav>
-            
-            <!-- 移动端菜单按钮 -->
-            <button id="menuBtn" class="md:hidden text-dark text-xl">
-                <i class="fa fa-bars"></i>
-            </button>
-        </div>
-    </div>
-    
-    <!-- 移动端导航 -->
-    <div id="mobileMenu" class="hidden md:hidden bg-white border-t">
-        <div class="container mx-auto px-4 py-3 flex flex-col gap-3">
-            <a href="#home" class="py-2 hover:text-cherry">首页</a>
-            <a href="#business" class="py-2 hover:text-cherry">核心业务</a>
-            <a href="#products" class="py-2 hover:text-cherry">产品中心</a>
-            <a href="#origin" class="py-2 hover:text-cherry">产地实力</a>
-            <a href="#service" class="py-2 hover:text-cherry">物流售后</a>
-            <a href="#contact" class="py-2 hover:text-cherry">合作咨询</a>
-        </div>
-    </div>
-</header>
-
-<!-- 首页banner -->
-<section id="home" class="relative bg-light py-12 md:py-24">
-    <div class="container mx-auto px-4 md:px-6">
-        <div class="flex flex-col md:flex-row items-center gap-8">
-            <div class="md:w-1/2 space-y-4">
-                <h1 class="text-3xl md:text-5xl font-bold leading-tight">
-                    大连樱桃 <span class="text-cherry">全产业链直供</span>
-                </h1>
-                <p class="text-lg text-gray-600">
-                    一件代发 | 产地代采 | 批量批发 | 衍生产品<br>
-                    正宗大连产地，冷链保鲜，品质保障
-                </p>
-                <div class="flex gap-4 pt-2">
-                    <a href="#contact" class="bg-cherry text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
-                        立即合作
-                    </a>
-                    <a href="#products" class="border-2 border-fresh text-fresh px-6 py-3 rounded-lg font-medium hover:bg-fresh hover:text-white transition">
-                        查看产品
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed w-full top-0 z-40 transition-all duration-300 bg-white/95 shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center">
+                        <img src="https://picsum.photos/id/1080/50/50" alt="大连樱桃Logo" class="h-10 w-10 rounded-full mr-3">
+                        <span class="text-2xl font-bold text-cherry-darkRed">大连樱桃</span>
                     </a>
                 </div>
-            </div>
-            <div class="md:w-1/2">
-                <img src="https://picsum.photos/id/102/800/500" alt="大连樱桃" class="rounded-2xl shadow-cherry w-full h-auto object-cover">
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- 核心优势 -->
-<section class="py-12 bg-white">
-    <div class="container mx-auto px-4">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            <div class="p-4 rounded-lg bg-light">
-                <i class="fa fa-check-circle text-cherry text-3xl mb-2"></i>
-                <h4 class="font-medium">产地直供</h4>
-            </div>
-            <div class="p-4 rounded-lg bg-light">
-                <i class="fa fa-truck text-cherry text-3xl mb-2"></i>
-                <h4 class="font-medium">冷链速发</h4>
-            </div>
-            <div class="p-4 rounded-lg bg-light">
-                <i class="fa fa-shield text-cherry text-3xl mb-2"></i>
-                <h4 class="font-medium">坏果包赔</h4>
-            </div>
-            <div class="p-4 rounded-lg bg-light">
-                <i class="fa fa-star text-cherry text-3xl mb-2"></i>
-                <h4 class="font-medium">品质精选</h4>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- 核心业务 -->
-<section id="business" class="py-14 bg-light">
-    <div class="container mx-auto px-4 text-center">
-        <h2 class="text-2xl md:text-3xl font-bold mb-2">核心业务板块</h2>
-        <p class="text-gray-600 mb-10">专注樱桃全产业链服务，满足各类客户需求</p>
-        
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- 一件代发 -->
-            <div class="bg-white rounded-xl p-6 shadow-cherry hover:-translate-y-1 transition">
-                <div class="w-14 h-14 bg-cherry bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fa fa-paper-plane text-cherry text-2xl"></i>
-                </div>
-                <h3 class="text-lg font-bold mb-2">樱桃一件代发</h3>
-                <p class="text-sm text-gray-600 mb-4">面向电商卖家、个体创业者<br>✅一件起发 ✅代打包发货 ✅快速物流</p>
-                <a href="#contact" class="text-cherry text-sm font-medium">立即咨询 <i class="fa fa-angle-right"></i></a>
-            </div>
-            
-            <!-- 产地代采 -->
-            <div class="bg-white rounded-xl p-6 shadow-cherry hover:-translate-y-1 transition">
-                <div class="w-14 h-14 bg-fresh bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fa fa-leaf text-fresh text-2xl"></i>
-                </div>
-                <h3 class="text-lg font-bold mb-2">樱桃产地代采</h3>
-                <p class="text-sm text-gray-600 mb-4">面向商超、批发市场<br>✅产地直采 ✅品质筛选 ✅定制标准</p>
-                <a href="#contact" class="text-fresh text-sm font-medium">立即咨询 <i class="fa fa-angle-right"></i></a>
-            </div>
-            
-            <!-- 批量批发 -->
-            <div class="bg-white rounded-xl p-6 shadow-cherry hover:-translate-y-1 transition">
-                <div class="w-14 h-14 bg-cherry bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fa fa-cubes text-cherry text-2xl"></i>
-                </div>
-                <h3 class="text-lg font-bold mb-2">樱桃批量批发</h3>
-                <p class="text-sm text-gray-600 mb-4">面向大型经销商<br>✅批量供货 ✅价格梯度 ✅稳定周期</p>
-                <a href="#contact" class="text-cherry text-sm font-medium">立即咨询 <i class="fa fa-angle-right"></i></a>
-            </div>
-            
-            <!-- 衍生产品 -->
-            <div class="bg-white rounded-xl p-6 shadow-cherry hover:-translate-y-1 transition">
-                <div class="w-14 h-14 bg-fresh bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fa fa-gift text-fresh text-2xl"></i>
-                </div>
-                <h3 class="text-lg font-bold mb-2">樱桃衍生产品</h3>
-                <p class="text-sm text-gray-600 mb-4">樱桃饼、樱桃酒、礼盒<br>✅特色工艺 ✅礼盒包装 ✅口感醇厚</p>
-                <a href="#products" class="text-fresh text-sm font-medium">查看产品 <i class="fa fa-angle-right"></i></a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- 产品中心 -->
-<section id="products" class="py-14 bg-white">
-    <div class="container mx-auto px-4 text-center">
-        <h2 class="text-2xl md:text-3xl font-bold mb-2">产品中心</h2>
-        <p class="text-gray-600 mb-10">正宗大连樱桃，品种齐全，可溯源</p>
-        
-        <!-- 产品标签 -->
-        <div class="flex justify-center gap-3 mb-8">
-            <button class="bg-cherry text-white px-4 py-2 rounded-full text-sm">全部产品</button>
-            <button class="bg-light px-4 py-2 rounded-full text-sm">鲜果樱桃</button>
-            <button class="bg-light px-4 py-2 rounded-full text-sm">衍生产品</button>
-        </div>
-        
-        <!-- 产品列表 -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- 产品1 -->
-            <div class="rounded-xl overflow-hidden shadow-cherry bg-white">
-                <img src="https://picsum.photos/id/102/500/350" alt="美早樱桃" class="w-full h-48 object-cover">
-                <div class="p-4 text-left">
-                    <h3 class="font-bold">美早樱桃</h3>
-                    <p class="text-sm text-gray-500 mb-2">产地：大连 | 糖度18+</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-cherry font-bold">¥ 128 / 5斤</span>
-                        <a href="#contact" class="text-xs bg-fresh text-white px-2 py-1 rounded">立即询价</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 产品2 -->
-            <div class="rounded-xl overflow-hidden shadow-cherry bg-white">
-                <img src="https://picsum.photos/id/292/500/350" alt="萨米脱樱桃" class="w-full h-48 object-cover">
-                <div class="p-4 text-left">
-                    <h3 class="font-bold">萨米脱樱桃</h3>
-                    <p class="text-sm text-gray-500 mb-2">产地：大连 | 肉厚多汁</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-cherry font-bold">¥ 118 / 5斤</span>
-                        <a href="#contact" class="text-xs bg-fresh text-white px-2 py-1 rounded">立即询价</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 产品3 -->
-            <div class="rounded-xl overflow-hidden shadow-cherry bg-white">
-                <img src="https://picsum.photos/id/431/500/350" alt="樱桃酒" class="w-full h-48 object-cover">
-                <div class="p-4 text-left">
-                    <h3 class="font-bold">樱桃果酒</h3>
-                    <p class="text-sm text-gray-500 mb-2">礼盒装 | 发酵工艺</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-cherry font-bold">¥ 168 / 瓶</span>
-                        <a href="#contact" class="text-xs bg-fresh text-white px-2 py-1 rounded">立即询价</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 产品4 -->
-            <div class="rounded-xl overflow-hidden shadow-cherry bg-white">
-                <img src="https://picsum.photos/id/241/500/350" alt="樱桃饼" class="w-full h-48 object-cover">
-                <div class="p-4 text-left">
-                    <h3 class="font-bold">樱桃酥饼</h3>
-                    <p class="text-sm text-gray-500 mb-2">礼盒装 | 传统工艺</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-cherry font-bold">¥ 88 / 盒</span>
-                        <a href="#contact" class="text-xs bg-fresh text-white px-2 py-1 rounded">立即询价</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- 产地实力 -->
-<section id="origin" class="py-14 bg-light">
-    <div class="container mx-auto px-4 text-center">
-        <h2 class="text-2xl md:text-3xl font-bold mb-2">大连产地实力</h2>
-        <p class="text-gray-600 mb-10">正宗大连樱桃核心产区，绿色种植，品质可溯源</p>
-        
-        <div class="grid md:grid-cols-3 gap-6">
-            <div class="rounded-xl overflow-hidden shadow-md">
-                <img src="https://picsum.photos/id/158/600/400" alt="种植基地" class="w-full h-48 object-cover">
-                <div class="p-4 bg-white text-left">
-                    <h3 class="font-bold mb-1">万亩种植基地</h3>
-                    <p class="text-sm text-gray-600">大连黄金纬度，土壤肥沃，光照充足，造就高品质樱桃</p>
-                </div>
-            </div>
-            <div class="rounded-xl overflow-hidden shadow-md">
-                <img src="https://picsum.photos/id/163/600/400" alt="绿色种植" class="w-full h-48 object-cover">
-                <div class="p-4 bg-white text-left">
-                    <h3 class="font-bold mb-1">绿色生态种植</h3>
-                    <p class="text-sm text-gray-600">无公害管理，物理防虫，人工施肥，天然健康</p>
-                </div>
-            </div>
-            <div class="rounded-xl overflow-hidden shadow-md">
-                <img src="https://picsum.photos/id/176/600/400" alt="人工采摘" class="w-full h-48 object-cover">
-                <div class="p-4 bg-white text-left">
-                    <h3 class="font-bold mb-1">人工精选采摘</h3>
-                    <p class="text-sm text-gray-600">逐颗筛选，只留优质果，保证每一颗品质上乘</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- 物流售后 -->
-<section id="service" class="py-14 bg-white">
-    <div class="container mx-auto px-4">
-        <h2 class="text-2xl md:text-3xl font-bold text-center mb-2">物流与售后保障</h2>
-        <p class="text-gray-600 text-center mb-10">全程冷链保鲜，快速发货，坏果包赔</p>
-        
-        <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-            <div>
-                <h3 class="text-lg font-bold mb-4 text-cherry"><i class="fa fa-truck mr-2"></i> 物流服务</h3>
-                <ul class="space-y-2 text-gray-700">
-                    <li>✅ 现货订单48小时内发出</li>
-                    <li>✅ 专业冷链包装+冰袋保鲜</li>
-                    <li>✅ 顺丰/京东空运，快速直达</li>
-                    <li>✅ 全国大部分地区可送达</li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="text-lg font-bold mb-4 text-fresh"><i class="fa fa-shield mr-2"></i> 售后保障</h3>
-                <ul class="space-y-2 text-gray-700">
-                    <li>✅ 签收24小时内坏果包赔</li>
-                    <li>✅ 破损/变质免费补发</li>
-                    <li>✅ 重量不足足额补差</li>
-                    <li>✅ 一对一专属客服对接</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- 合作客户 -->
-<section class="py-10 bg-light">
-    <div class="container mx-auto px-4 text-center">
-        <h3 class="font-bold mb-6">合作客户与口碑</h3>
-        <div class="flex flex-wrap justify-center gap-6 mb-8">
-            <div class="w-20 h-10 bg-white rounded flex items-center justify-center shadow-sm">商超客户</div>
-            <div class="w-20 h-10 bg-white rounded flex items-center justify-center shadow-sm">电商平台</div>
-            <div class="w-20 h-10 bg-white rounded flex items-center justify-center shadow-sm">批发市场</div>
-            <div class="w-20 h-10 bg-white rounded flex items-center justify-center shadow-sm">礼品公司</div>
-            <div class="w-20 h-10 bg-white rounded flex items-center justify-center shadow-sm">社区团购</div>
-        </div>
-        <p class="text-gray-600 italic">“大连樱桃品质稳定，物流快，售后省心，长期合作首选！” —— 某生鲜商超</p>
-    </div>
-</section>
-
-<!-- 合作咨询表单 -->
-<section id="contact" class="py-14 bg-gradient-cherry text-white">
-    <div class="container mx-auto px-4 text-center">
-        <h2 class="text-2xl md:text-3xl font-bold mb-2">立即合作咨询</h2>
-        <p class="mb-10">填写需求，我们将第一时间与您联系</p>
-        
-        <div class="max-w-xl mx-auto bg-white rounded-xl p-6 shadow-lg text-left text-dark">
-            <form class="space-y-4">
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-sm font-medium">姓名</label>
-                        <input type="text" class="w-full mt-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cherry" placeholder="请输入您的姓名">
-                    </div>
-                    <div>
-                        <label class="text-sm font-medium">电话/微信</label>
-                        <input type="text" class="w-full mt-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cherry" placeholder="请输入联系方式">
-                    </div>
+                
+                <!-- 桌面导航 -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-cherry-red font-medium transition-colors">首页</a>
+                    <a href="#products" class="text-gray-700 hover:text-cherry-red font-medium transition-colors">产品中心</a>
+                    <a href="#services" class="text-gray-700 hover:text-cherry-red font-medium transition-colors">业务服务</a>
+                    <a href="#origin" class="text-gray-700 hover:text-cherry-red font-medium transition-colors">产地直供</a>
+                    <a href="#contact" class="text-gray-700 hover:text-cherry-red font-medium transition-colors">联系我们</a>
+                </nav>
+                
+                <!-- 咨询按钮 -->
+                <div class="hidden md:block">
+                    <a href="#contact" class="bg-cherry-red hover:bg-cherry-darkRed text-white px-5 py-2 rounded-full font-medium transition-all shadow-md hover:shadow-lg">
+                        <i class="fa fa-comments-o mr-2"></i>立即咨询
+                    </a>
                 </div>
                 
-                <div>
-                    <label class="text-sm font-medium">合作类型</label>
-                    <select class="w-full mt-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cherry">
-                        <option>一件代发</option>
-                        <option>产地代采</option>
-                        <option>批量批发</option>
-                        <option>衍生产品采购</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label class="text-sm font-medium">采购需求</label>
-                    <textarea rows="3" class="w-full mt-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cherry" placeholder="请输入您的采购数量、规格等需求"></textarea>
-                </div>
-                
-                <button type="submit" class="w-full bg-cherry text-white py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
-                    提交合作意向
+                <!-- 移动端菜单按钮 -->
+                <button id="menuBtn" class="md:hidden text-gray-700 focus:outline-none">
+                    <i class="fa fa-bars text-2xl"></i>
                 </button>
-            </form>
-        </div>
-    </div>
-</section>
-
-<!-- 悬浮客服 -->
-<div class="fixed bottom-6 right-6 z-50">
-    <a href="#contact" class="block w-12 h-12 bg-cherry rounded-full shadow-lg flex items-center justify-center text-white text-xl">
-        <i class="fa fa-comments"></i>
-    </a>
-</div>
-
-<!-- 底部 -->
-<footer class="bg-dark text-white py-10">
-    <div class="container mx-auto px-4">
-        <div class="grid md:grid-cols-4 gap-8">
-            <div>
-                <h4 class="font-bold text-lg mb-4">大连樱桃产业链</h4>
-                <p class="text-gray-400 text-sm">专注大连樱桃全产业链服务<br>产地直供 | 代发 | 代采 | 批发</p>
-            </div>
-            <div>
-                <h4 class="font-bold mb-4">业务导航</h4>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="#business">一件代发</a></li>
-                    <li><a href="#business">产地代采</a></li>
-                    <li><a href="#business">批量批发</a></li>
-                    <li><a href="#products">衍生产品</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold mb-4">帮助中心</h4>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="#service">物流说明</a></li>
-                    <li><a href="#service">售后政策</a></li>
-                    <li><a href="#origin">产地溯源</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold mb-4">联系我们</h4>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><i class="fa fa-phone mr-1"></i> 138-XXXX-XXXX</li>
-                    <li><i class="fa fa-weixin mr-1"></i> dalianyingtao</li>
-                    <li><i class="fa fa-map-marker mr-1"></i> 大连樱桃核心产区</li>
-                </ul>
             </div>
         </div>
-        <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500 text-sm">
-            © 2025 大连樱桃全产业链平台 版权所有
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+            <div class="container mx-auto px-4 py-3 space-y-3">
+                <a href="#home" class="block py-2 text-gray-700 hover:text-cherry-red">首页</a>
+                <a href="#products" class="block py-2 text-gray-700 hover:text-cherry-red">产品中心</a>
+                <a href="#services" class="block py-2 text-gray-700 hover:text-cherry-red">业务服务</a>
+                <a href="#origin" class="block py-2 text-gray-700 hover:text-cherry-red">产地直供</a>
+                <a href="#contact" class="block py-2 text-gray-700 hover:text-cherry-red">联系我们</a>
+                <a href="#contact" class="block py-2 bg-cherry-red text-white text-center rounded-full">
+                    <i class="fa fa-comments-o mr-2"></i>立即咨询
+                </a>
+            </div>
         </div>
-    </div>
-</footer>
+    </header>
 
-<script>
-    // 移动端菜单
-    const menuBtn = document.getElementById('menuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-    
-    // 关闭菜单
-    document.querySelectorAll('#mobileMenu a').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
+    <!-- 主横幅区域 -->
+    <section id="home" class="pt-24 md:pt-0 relative bg-gradient-to-r from-cherry-darkRed to-cherry-red overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <img src="https://picsum.photos/id/1080/1920/1080" alt="樱桃背景" class="w-full h-full object-cover">
+        </div>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 lg:py-32 relative z-10">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="text-white">
+                    <div class="inline-block px-4 py-1 bg-cherry-gold text-cherry-darkRed rounded-full text-sm font-semibold mb-6 animate-pulse">
+                        <i class="fa fa-calendar mr-2"></i>当前季节: 樱桃预售中
+                    </div>
+                    <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-bold leading-tight text-shadow mb-6">
+                        大连樱桃<br>从枝头到舌尖的新鲜
+                    </h1>
+                    <p class="text-[clamp(1rem,2vw,1.25rem)] mb-8 text-cherry-beige/90 max-w-lg">
+                        全产业链服务，涵盖一件代发、专业代采、批量批发及樱桃衍生产品，为您提供最新鲜的大连樱桃。
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#products" class="bg-white text-cherry-red hover:bg-gray-100 px-8 py-3 rounded-full font-semibold transition-all shadow-lg hover:shadow-xl">
+                            浏览产品 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                        <a href="#services" class="bg-transparent border-2 border-white text-white hover:bg-white/10 px-8 py-3 rounded-full font-semibold transition-all">
+                            了解服务
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden md:block relative">
+                    <img src="https://picsum.photos/id/1080/600/600" alt="大连樱桃" class="w-full h-auto rounded-2xl shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                    <div class="absolute -bottom-6 -left-6 bg-cherry-gold text-cherry-darkRed p-4 rounded-lg shadow-lg">
+                        <p class="font-bold text-xl">产地直供</p>
+                        <p class="text-sm">从大连果园直达您手中</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 波浪形分隔符 -->
+        <div class="absolute bottom-0 left-0 right-0">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" class="w-full h-auto">
+                <path fill="#ffffff" fill-opacity="1" d="M0,64L60,69.3C120,75,240,85,360,80C480,75,600,53,720,48C840,43,960,53,1080,58.7C1200,64,1320,64,1380,64L1440,64L1440,100L1380,100C1320,100,1200,100,1080,100C960,100,840,100,720,100C600,100,480,100,360,100C240,100,120,100,60,100L0,100Z"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- 业务优势概览 -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.75rem,3vw,2.5rem)] font-bold text-cherry-darkRed mb-4">我们的核心优势</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">依托大连优质樱桃产区资源，提供从种植到销售的全产业链服务，满足不同客户的多样化需求</p>
+            </div>
+            
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-cherry-beige rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow card-hover">
+                    <div class="w-14 h-14 bg-cherry-red/10 rounded-full flex items-center justify-center mb-5">
+                        <i class="fa fa-truck text-2xl text-cherry-red"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">新鲜直达</h3>
+                    <p class="text-gray-600">从果园采摘到发货不超过24小时，确保樱桃新鲜度</p>
+                </div>
+                
+                <div class="bg-cherry-beige rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow card-hover">
+                    <div class="w-14 h-14 bg-cherry-green/10 rounded-full flex items-center justify-center mb-5">
+                        <i class="fa fa-certificate text-2xl text-cherry-green"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">品质保证</h3>
+                    <p class="text-gray-600">严格的质量检测标准，确保每一颗樱桃都符合高品质要求</p>
+                </div>
+                
+                <div class="bg-cherry-beige rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow card-hover">
+                    <div class="w-14 h-14 bg-cherry-gold/10 rounded-full flex items-center justify-center mb-5">
+                        <i class="fa fa-handshake-o text-2xl text-cherry-gold"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">灵活合作</h3>
+                    <p class="text-gray-600">提供一件代发、代采、批发等多种合作模式，满足不同需求</p>
+                </div>
+                
+                <div class="bg-cherry-beige rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow card-hover">
+                    <div class="w-14 h-14 bg-cherry-darkGreen/10 rounded-full flex items-center justify-center mb-5">
+                        <i class="fa fa-users text-2xl text-cherry-darkGreen"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">专业服务</h3>
+                    <p class="text-gray-600">多年樱桃产业经验，为客户提供专业的采购和销售建议</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 产品中心 -->
+    <section id="products" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-[clamp(1.75rem,3vw,2.5rem)] font-bold text-cherry-darkRed mb-4">产品中心</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">精选大连优质樱桃及衍生产品，满足您的各种需求</p>
+            </div>
+            
+            <!-- 产品分类标签 -->
+            <div class="flex flex-wrap justify-center gap-4 mb-10">
+                <button class="product-tab active px-6 py-2 rounded-full bg-cherry-red text-white font-medium" data-category="all">全部产品</button>
+                <button class="product-tab px-6 py-2 rounded-full bg-gray-200 hover:bg-gray-300 font-medium transition-colors" data-category="fresh">新鲜樱桃</button>
+                <button class="product-tab px-6 py-2 rounded-full bg-gray-200 hover:bg-gray-300 font-medium transition-colors" data-category="processed">深加工产品</button>
+            </div>
+            
+            <!-- 新鲜樱桃产品 -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <!-- 美早樱桃 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all card-hover" data-category="fresh">
+                    <div class="relative">
+                        <img src="https://picsum.photos/id/1080/600/400" alt="美早樱桃" class="w-full h-64 object-cover">
+                        <div class="absolute top-4 left-4 bg-cherry-red text-white text-sm font-bold px-3 py-1 rounded-full">
+                            热销
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold text-cherry-darkRed">美早樱桃</h3>
+                            <span class="text-lg font-bold">¥45.00/斤</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">果实个大、色泽艳丽、果肉脆嫩、多汁味甜</p>
+                        <div class="flex flex-wrap gap-2 mb-5">
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">果径28-32mm</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">甜度18-22%</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">大连产地</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="#contact" class="flex-1 bg-cherry-red hover:bg-cherry-darkRed text-white text-center py-2 rounded-lg transition-colors">
+                                咨询采购
+                            </a>
+                            <button class="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-100 transition-colors">
+                                <i class="fa fa-heart-o text-gray-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 萨米脱樱桃 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all card-hover" data-category="fresh">
+                    <div class="relative">
+                        <img src="https://picsum.photos/id/1065/600/400" alt="萨米脱樱桃" class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold text-cherry-darkRed">萨米脱樱桃</h3>
+                            <span class="text-lg font-bold">¥38.00/斤</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">果肉肥厚、脆硬、风味浓甜、品质上等</p>
+                        <div class="flex flex-wrap gap-2 mb-5">
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">果径26-30mm</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">甜度17-20%</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">大连产地</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="#contact" class="flex-1 bg-cherry-red hover:bg-cherry-darkRed text-white text-center py-2 rounded-lg transition-colors">
+                                咨询采购
+                            </a>
+                            <button class="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-100 transition-colors">
+                                <i class="fa fa-heart-o text-gray-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 红灯樱桃 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all card-hover" data-category="fresh">
+                    <div class="relative">
+                        <img src="https://picsum.photos/id/1060/600/400" alt="红灯樱桃" class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold text-cherry-darkRed">红灯樱桃</h3>
+                            <span class="text-lg font-bold">¥32.00/斤</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">色泽鲜红、肉质较软、酸甜适口、品质优良</p>
+                        <div class="flex flex-wrap gap-2 mb-5">
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">果径24-28mm</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">甜度16-19%</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">大连产地</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="#contact" class="flex-1 bg-cherry-red hover:bg-cherry-darkRed text-white text-center py-2 rounded-lg transition-colors">
+                                咨询采购
+                            </a>
+                            <button class="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-100 transition-colors">
+                                <i class="fa fa-heart-o text-gray-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 樱桃饼 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all card-hover" data-category="processed">
+                    <div class="relative">
+                        <img src="https://picsum.photos/id/292/600/400" alt="樱桃饼" class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold text-cherry-darkRed">手工樱桃饼</h3>
+                            <span class="text-lg font-bold">¥28.00/盒</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">传统工艺制作，保留樱桃原香，口感酥脆</p>
+                        <div class="flex flex-wrap gap-2 mb-5">
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">10枚/盒</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">无添加剂</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">礼盒装</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="#contact" class="flex-1 bg-cherry-red hover:bg-cherry-darkRed text-white text-center py-2 rounded-lg transition-colors">
+                                咨询采购
+                            </a>
+                            <button class="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-100 transition-colors">
+                                <i class="fa fa-heart-o text-gray-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 樱桃酒 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all card-hover" data-category="processed">
+                    <div class="relative">
+                        <img src="https://picsum.photos/id/431/600/400" alt="樱桃酒" class="w-full h-64 object-cover">
+                        <div class="absolute top-4 left-4 bg-cherry-gold text-cherry-darkRed text-sm font-bold px-3 py-1 rounded-full">
+                            新品
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold text-cherry-darkRed">樱桃发酵酒</h3>
+                            <span class="text-lg font-bold">¥88.00/瓶</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">100%樱桃发酵，果香浓郁，口感醇厚</p>
+                        <div class="flex flex-wrap gap-2 mb-5">
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">750ml/瓶</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">12%vol</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">陈酿12个月</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="#contact" class="flex-1 bg-cherry-red hover:bg-cherry-darkRed text-white text-center py-2 rounded-lg transition-colors">
+                                咨询采购
+                            </a>
+                            <button class="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-100 transition-colors">
+                                <i class="fa fa-heart-o text-gray-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 樱桃果酱 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all card-hover" data-category="processed">
+                    <div class="relative">
+                        <img src="https://picsum.photos/id/139/600/400" alt="樱桃果酱" class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold text-cherry-darkRed">纯天然樱桃酱</h3>
+                            <span class="text-lg font-bold">¥35.00/瓶</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">新鲜樱桃熬制，无添加防腐剂，口感酸甜</p>
+                        <div class="flex flex-wrap gap-2 mb-5">
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">300g/瓶</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">无添加蔗糖</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">早餐伴侣</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="#contact" class="flex-1 bg-cherry-red hover:bg-cherry-darkRed text-white text-center py-2 rounded-lg transition-colors">
+                                咨询采购
+                            </a>
+                            <button class="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-100 transition-colors">
+                                <i class="fa fa-heart-o text-gray-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <a href="#" class="inline-flex items-center text-cherry-red hover:text-cherry-darkRed font-semibold">
+                    查看全部产品 <i class="fa fa-long-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 业务服务 -->
+    <section id="services" class="py-16 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.75rem,3vw,2.5rem)] font-bold text-cherry-darkRed mb-4">我们的业务服务</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">为不同类型客户提供定制化的樱桃供应链解决方案</p>
+            </div>
+            
+            <!-- 服务标签页 -->
+            <div class="mb-10">
+                <div class="flex flex-wrap border-b border-gray-200">
+                    <button class="service-tab active py-4 px-6 font-medium text-cherry-red border-b-2 border-cherry-red" data-service="dropship">
+                        一件代发
+                    </button>
+                    <button class="service-tab py-4 px-6 font-medium text-gray-500 hover:text-gray-700" data-service="procurement">
+                        专业代采
+                    </button>
+                    <button class="service-tab py-4 px-6 font-medium text-gray-500 hover:text-gray-700" data-service="wholesale">
+                        批量批发
+                    </button>
+                    <button class="service-tab py-4 px-6 font-medium text-gray-500 hover:text-gray-700" data-service="derivatives">
+                        衍生产品
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 一件代发服务 -->
+            <div class="service-content active" id="dropship-content">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span class="inline-block px-3 py-1 bg-cherry-red/10 text-cherry-red rounded-full text-sm font-medium mb-4">
+                            面向电商卖家、个体创业者
+                        </span>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-6">樱桃一件代发服务</h3>
+                        <p class="text-gray-600 mb-6">
+                            无需库存，无需物流，我们为您提供从接单到发货的一站式服务，让您专注于销售，轻松开展樱桃电商业务。
+                        </p>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-red/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-red"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">一件起发</h4>
+                                    <p class="text-gray-600 text-sm">无需批量进货，单个订单即可发货，降低创业风险</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-red/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-red"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">专业打包</h4>
+                                    <p class="text-gray-600 text-sm">定制包装，保护樱桃新鲜度，提升客户体验</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-red/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-red"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">快速物流</h4>
+                                    <p class="text-gray-600 text-sm">24小时内发货，合作顺丰、京东等快递，确保时效</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-red/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-red"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">数据支持</h4>
+                                    <p class="text-gray-600 text-sm">提供销售数据分析，帮助优化销售策略</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="#contact" class="inline-block bg-cherry-red hover:bg-cherry-darkRed text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                            了解合作详情
+                        </a>
+                    </div>
+                    
+                    <div class="relative">
+                        <img src="https://picsum.photos/id/251/800/600" alt="樱桃一件代发服务" class="w-full h-auto rounded-xl shadow-lg">
+                        <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-lg max-w-xs">
+                            <div class="flex items-center mb-3">
+                                <img src="https://picsum.photos/id/64/100/100" alt="客户头像" class="w-12 h-12 rounded-full mr-3">
+                                <div>
+                                    <h5 class="font-semibold">张女士</h5>
+                                    <p class="text-sm text-gray-500">淘宝店主</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600">"代发服务帮我省去了库存压力，发货速度也很快，客户反馈樱桃很新鲜，回购率很高！"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 专业代采服务 -->
+            <div class="service-content hidden" id="procurement-content">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span class="inline-block px-3 py-1 bg-cherry-green/10 text-cherry-green rounded-full text-sm font-medium mb-4">
+                            面向商超、批发市场
+                        </span>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-6">樱桃专业代采服务</h3>
+                        <p class="text-gray-600 mb-6">
+                            依托大连优质樱桃产区资源，我们为商超和批发市场客户提供专业的樱桃采购服务，严格把控品质，满足不同渠道需求。
+                        </p>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-green/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-green"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">产地直采</h4>
+                                    <p class="text-gray-600 text-sm">深入大连核心产区，直接从果园采摘，减少中间环节</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-green/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-green"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">品质筛选</h4>
+                                    <p class="text-gray-600 text-sm">专业团队严格筛选，确保每一批次樱桃品质稳定</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-green/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-green"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">定制标准</h4>
+                                    <p class="text-gray-600 text-sm">可根据需求定制采摘标准，满足不同客户群体需求</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-green/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-green"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">定时配送</h4>
+                                    <p class="text-gray-600 text-sm">按约定时间配送，确保新鲜上架，减少损耗</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="#contact" class="inline-block bg-cherry-green hover:bg-cherry-lightGreen text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                            咨询代采方案
+                        </a>
+                    </div>
+                    
+                    <div>
+                        <img src="https://picsum.photos/id/135/800/600" alt="樱桃专业代采服务" class="w-full h-auto rounded-xl shadow-lg">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 批量批发服务 -->
+            <div class="service-content hidden" id="wholesale-content">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span class="inline-block px-3 py-1 bg-cherry-gold/10 text-cherry-gold rounded-full text-sm font-medium mb-4">
+                            面向大型经销商
+                        </span>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-6">樱桃批量批发服务</h3>
+                        <p class="text-gray-600 mb-6">
+                            为大型经销商提供稳定的樱桃供应，规模化采购带来价格优势，同时保证品质和供货稳定性。
+                        </p>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-gold/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-gold"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">批量供应</h4>
+                                    <p class="text-gray-600 text-sm">日均供应能力可达10吨以上，满足大型采购需求</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-gold/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-gold"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">价格梯度</h4>
+                                    <p class="text-gray-600 text-sm">量大从优，根据采购量提供不同折扣，降低成本</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-gold/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-gold"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">供货周期</h4>
+                                    <p class="text-gray-600 text-sm">覆盖整个樱桃季，从5月到7月持续稳定供货</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-gold/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-gold"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">定制包装</h4>
+                                    <p class="text-gray-600 text-sm">可根据需求定制批发包装，便于运输和二次销售</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="#contact" class="inline-block bg-cherry-gold hover:bg-amber-500 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                            获取批发报价
+                        </a>
+                    </div>
+                    
+                    <div>
+                        <img src="https://picsum.photos/id/306/800/600" alt="樱桃批量批发服务" class="w-full h-auto rounded-xl shadow-lg">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 衍生产品服务 -->
+            <div class="service-content hidden" id="derivatives-content">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span class="inline-block px-3 py-1 bg-cherry-darkGreen/10 text-cherry-darkGreen rounded-full text-sm font-medium mb-4">
+                            面向各类渠道商
+                        </span>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-6">樱桃衍生产品供应</h3>
+                        <p class="text-gray-600 mb-6">
+                            除新鲜樱桃外，我们还提供樱桃饼、樱桃酒等深加工产品，延长樱桃产业链，满足不同消费场景需求。
+                        </p>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-darkGreen/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-darkGreen"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">特色工艺</h4>
+                                    <p class="text-gray-600 text-sm">传统工艺结合现代技术，保留樱桃原香和营养</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-darkGreen/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-darkGreen"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">多样品类</h4>
+                                    <p class="text-gray-600 text-sm">樱桃饼、樱桃酒、樱桃酱等多种产品，丰富产品线</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-darkGreen/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-darkGreen"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">礼盒包装</h4>
+                                    <p class="text-gray-600 text-sm">精美礼盒设计，适合节日礼品和企业福利采购</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-cherry-darkGreen/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check text-cherry-darkGreen"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">全年供应</h4>
+                                    <p class="text-gray-600 text-sm">克服鲜果季节性限制，实现全年稳定供货</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="#contact" class="inline-block bg-cherry-darkGreen hover:bg-gray-800 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                            了解产品详情
+                        </a>
+                    </div>
+                    
+                    <div>
+                        <img src="https://picsum.photos/id/493/800/600" alt="樱桃衍生产品" class="w-full h-auto rounded-xl shadow-lg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 产地宣传 -->
+    <section id="origin" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.75rem,3vw,2.5rem)] font-bold text-cherry-darkRed mb-4">大连樱桃产地直供</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">得天独厚的自然条件，孕育出高品质的大连樱桃</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <img src="https://picsum.photos/id/110/800/600" alt="大连樱桃种植基地" class="w-full h-auto rounded-xl shadow-lg">
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">优越的生长环境</h3>
+                    <p class="text-gray-600 mb-6">
+                        大连地处辽东半岛最南端，属于暖温带湿润季风气候，昼夜温差大，光照充足，非常适合樱桃生长。独特的地理环境使得大连樱桃果实饱满、含糖量高、口感鲜美。
+                    </p>
+                    
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div class="bg-white p-5 rounded-lg shadow-sm">
+                            <div class="w-12 h-12 bg-cherry-green/10 rounded-full flex items-center justify-center mb-4">
+                                <i class="fa fa-sun-o text-2xl text-cherry-green"></i>
+                            </div>
+                            <h4 class="font-semibold mb-2">充足光照</h4>
+                            <p class="text-sm text-gray-600">年均日照时数达2500-2800小时，有利于糖分积累</p>
+                        </div>
+                        
+                        <div class="bg-white p-5 rounded-lg shadow-sm">
+                            <div class="w-12 h-12 bg-cherry-blue/10 rounded-full flex items-center justify-center mb-4">
+                                <i class="fa fa-tint text-2xl text-blue-500"></i>
+                            </div>
+                            <h4 class="font-semibold mb-2">优质水源</h4>
+                            <p class="text-sm text-gray-600">采用纯净地下水灌溉，无工业污染</p>
+                        </div>
+                        
+                        <div class="bg-white p-5 rounded-lg shadow-sm">
+                            <div class="w-12 h-12 bg-cherry-gold/10 rounded-full flex items-center justify-center mb-4">
+                                <i class="fa fa-leaf text-2xl text-cherry-gold"></i>
+                            </div>
+                            <h4 class="font-semibold mb-2">肥沃土壤</h4>
+                            <p class="text-sm text-gray-600">独特的沙壤土，透气性好，富含矿物质</p>
+                        </div>
+                        
+                        <div class="bg-white p-5 rounded-lg shadow-sm">
+                            <div class="w-12 h-12 bg-cherry-red/10 rounded-full flex items-center justify-center mb-4">
+                                <i class="fa fa-thermometer-half text-2xl text-cherry-red"></i>
+                            </div>
+                            <h4 class="font-semibold mb-2">适宜温差</h4>
+                            <p class="text-sm text-gray-600">昼夜温差大，有利于果实着色和糖分积累</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 种植技术 -->
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">科学种植技术</h3>
+                    <p class="text-gray-600 mb-6">
+                        我们采用现代化种植技术，结合传统经验，从育苗、种植到采摘，每一个环节都严格把控，确保樱桃品质。
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                <span class="font-bold text-cherry-red">01</span>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">优选品种</h4>
+                                <p class="text-gray-600">引进和培育优质樱桃品种，如美早、萨米脱、红灯等，确保果实品质</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                <span class="font-bold text-cherry-red">02</span>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">生态种植</h4>
+                                <p class="text-gray-600">采用生态种植模式，减少农药使用，确保食品安全</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                <span class="font-bold text-cherry-red">03</span>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">科学管理</h4>
+                                <p class="text-gray-600">通过精准灌溉、合理修剪、科学施肥等技术，提高果实品质</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                <span class="font-bold text-cherry-red">04</span>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">适时采摘</h4>
+                                <p class="text-gray-600">根据品种特性，在最佳成熟度时采摘，确保口感和风味</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <img src="https://picsum.photos/id/1059/800/600" alt="科学种植技术" class="w-full h-auto rounded-xl shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 樱桃季节与供应周期 -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.75rem,3vw,2.5rem)] font-bold text-cherry-darkRed mb-4">樱桃季节与供应周期</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">了解大连樱桃的成熟时间，提前规划采购计划</p>
+            </div>
+            
+            <div class="bg-gray-50 rounded-2xl p-6 md:p-10 shadow-md">
+                <div class="mb-10">
+                    <canvas id="harvestChart" height="100"></canvas>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                <i class="fa fa-calendar text-blue-500"></i>
+                            </div>
+                            <h3 class="font-bold text-lg">早熟品种</h3>
+                        </div>
+                        <p class="text-gray-600 mb-3">5月初 - 5月中旬</p>
+                        <p class="text-sm text-gray-500">代表品种：红灯、早大果等，果实成熟期早，抢占市场先机</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-cherry-red/10 rounded-full flex items-center justify-center mr-3">
+                                <i class="fa fa-calendar-check-o text-cherry-red"></i>
+                            </div>
+                            <h3 class="font-bold text-lg">中熟品种</h3>
+                        </div>
+                        <p class="text-gray-600 mb-3">5月中旬 - 6月中旬</p>
+                        <p class="text-sm text-gray-500">代表品种：美早、萨米脱等，品质最佳，供应最充足的时期</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center mr-3">
+                                <i class="fa fa-calendar-plus-o text-amber-500"></i>
+                            </div>
+                            <h3 class="font-bold text-lg">晚熟品种</h3>
+                        </div>
+                        <p class="text-gray-600 mb-3">6月中旬 - 7月初</p>
+                        <p class="text-sm text-gray-500">代表品种：雷尼、甜心等，延长樱桃供应期，满足后期需求</p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <a href="#contact" class="inline-block bg-cherry-red hover:bg-cherry-darkRed text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                        预约预售 <i class="fa fa-calendar-check-o ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 客户评价与合作商家 -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.75rem,3vw,2.5rem)] font-bold text-cherry-darkRed mb-4">客户评价与合作商家</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">我们的服务得到了众多客户的认可，与多家知名企业建立了长期合作关系</p>
+            </div>
+            
+            <!-- 客户评价 -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"作为淘宝卖家，选择了他们的一件代发服务，省去了库存和发货的麻烦，樱桃品质很好，客户反馈非常不错，回购率很高。"</p>
+                    <div class="flex items-center">
+                        <img src="https://picsum.photos/id/64/100/100" alt="客户头像" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold">李女士</h4>
+                            <p class="text-sm text-gray-500">淘宝店主 · 合作2年</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"我们超市与他们合作多年，代采的樱桃品质稳定，供货及时，价格也很有优势，是非常可靠的供应商。"</p>
+                    <div class="flex items-center">
+                        <img src="https://picsum.photos/id/91/100/100" alt="客户头像" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold">王先生</h4>
+                            <p class="text-sm text-gray-500">超市采购经理 · 合作3年</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-half-o"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"作为水果批发商，我们每年都会大量采购他们的樱桃，批量大，价格优，而且可以根据需求定制包装，非常方便。"</p>
+                    <div class="flex items-center">
+                        <img src="https://picsum.photos/id/22/100/100" alt="客户头像" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold">张女士</h4>
+                            <p class="text-sm text-gray-500">水果批发商 · 合作5年</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 合作商家 -->
+            <div>
+                <h3 class="text-xl font-bold text-center mb-8">合作商家</h3>
+                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+                    <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+                        <img src="https://picsum.photos/id/1/120/60" alt="合作商家Logo" class="h-8 md:h-10">
+                    </div>
+                    <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+                        <img src="https://picsum.photos/id/2/120/60" alt="合作商家Logo" class="h-8 md:h-10">
+                    </div>
+                    <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+                        <img src="https://picsum.photos/id/3/120/60" alt="合作商家Logo" class="h-8 md:h-10">
+                    </div>
+                    <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+                        <img src="https://picsum.photos/id/4/120/60" alt="合作商家Logo" class="h-8 md:h-10">
+                    </div>
+                    <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+                        <img src="https://picsum.photos/id/5/120/60" alt="合作商家Logo" class="h-8 md:h-10">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 物流与售后 -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.75rem,3vw,2.5rem)] font-bold text-cherry-darkRed mb-4">物流与售后保障</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">我们承诺为您提供快速、安全的物流服务和完善的售后保障</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">物流服务</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mt-1 mr-5 flex-shrink-0">
+                                <i class="fa fa-truck text-2xl text-blue-500"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 text-lg mb-2">快速发货</h4>
+                                <p class="text-gray-600">当天订单，当天处理，24小时内发货，确保樱桃新鲜送达</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mt-1 mr-5 flex-shrink-0">
+                                <i class="fa fa-shipping-fast text-2xl text-blue-500"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 text-lg mb-2">优质快递</h4>
+                                <p class="text-gray-600">与顺丰、京东等知名快递公司合作，提供冷链运输选项</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mt-1 mr-5 flex-shrink-0">
+                                <i class="fa fa-box text-2xl text-blue-500"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 text-lg mb-2">专业包装</h4>
+                                <p class="text-gray-600">采用专业保鲜包装，减少运输损耗，保持樱桃新鲜度</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mt-1 mr-5 flex-shrink-0">
+                                <i class="fa fa-tracking text-2xl text-blue-500"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 text-lg mb-2">物流跟踪</h4>
+                                <p class="text-gray-600">提供全程物流跟踪服务，随时了解货物运输状态</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">售后保障</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-cherry-red/10 rounded-full flex items-center justify-center mt-1 mr-5 flex-shrink-0">
+                                <i class="fa fa-shield text-2xl text-cherry-red"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 text-lg mb-2">品质保证</h4>
+                                <p class="text-gray-600">所有樱桃均经过严格筛选，确保符合品质标准</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-cherry-red/10 rounded-full flex items-center justify-center mt-1 mr-5 flex-shrink-0">
+                                <i class="fa fa-refresh text-2xl text-cherry-red"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 text-lg mb-2">坏果包赔</h4>
+                                <p class="text-gray-600">收到货物后24小时内，如有坏果可凭照片按比例赔付</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-cherry-red/10 rounded-full flex items-center justify-center mt-1 mr-5 flex-shrink-0">
+                                <i class="fa fa-comments text-2xl text-cherry-red"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 text-lg mb-2">专业客服</h4>
+                                <p class="text-gray-600">7×12小时在线客服，及时解决您的问题和需求</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-cherry-red/10 rounded-full flex items-center justify-center mt-1 mr-5 flex-shrink-0">
+                                <i class="fa fa-handshake-o text-2xl text-cherry-red"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 text-lg mb-2">长期合作保障</h4>
+                                <p class="text-gray-600">为长期合作伙伴提供专属服务和价格优惠</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我们与咨询表单 -->
+    <section id="contact" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.75rem,3vw,2.5rem)] font-bold text-cherry-darkRed mb-4">联系我们</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">无论您有任何疑问或需求，都可以通过以下方式联系我们，我们将尽快回复</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <div class="bg-white p-8 rounded-xl shadow-md h-full">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">咨询与合作</h3>
+                        <p class="text-gray-600 mb-8">请填写以下表单，我们的专业团队将在24小时内与您联系</p>
+                        
+                        <form>
+                            <div class="mb-4">
+                                <label for="name" class="block text-gray-700 font-medium mb-2">您的姓名</label>
+                                <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cherry-red focus:border-transparent" placeholder="请输入您的姓名">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="phone" class="block text-gray-700 font-medium mb-2">联系电话</label>
+                                <input type="tel" id="phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cherry-red focus:border-transparent" placeholder="请输入您的联系电话">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="email" class="block text-gray-700 font-medium mb-2">电子邮箱</label>
+                                <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cherry-red focus:border-transparent" placeholder="请输入您的电子邮箱">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="service" class="block text-gray-700 font-medium mb-2">意向服务</label>
+                                <select id="service" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cherry-red focus:border-transparent">
+                                    <option value="">请选择意向服务</option>
+                                    <option value="dropship">一件代发</option>
+                                    <option value="procurement">专业代采</option>
+                                    <option value="wholesale">批量批发</option>
+                                    <option value="derivatives">衍生产品</option>
+                                    <option value="other">其他服务</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label for="message" class="block text-gray-700 font-medium mb-2">您的需求</label>
+                                <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cherry-red focus:border-transparent" placeholder="请详细描述您的需求"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="w-full bg-cherry-red hover:bg-cherry-darkRed text-white py-3 rounded-lg font-medium transition-colors">
+                                提交咨询
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="bg-white p-8 rounded-xl shadow-md mb-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">联系方式</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-cherry-red/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-phone text-cherry-red"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">联系电话</h4>
+                                    <p class="text-gray-600">400-123-4567</p>
+                                    <p class="text-gray-500 text-sm">周一至周日 8:00-20:00</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-cherry-red/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-envelope text-cherry-red"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">电子邮箱</h4>
+                                    <p class="text-gray-600">info@daliancey.com</p>
+                                    <p class="text-gray-500 text-sm">24小时内回复</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-cherry-red/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-weixin text-cherry-red"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">微信咨询</h4>
+                                    <p class="text-gray-600">daliancey01</p>
+                                    <p class="text-gray-500 text-sm">扫码添加微信客服</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-cherry-red/10 rounded-full flex items-center justify-center mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-map-marker text-cherry-red"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">公司地址</h4>
+                                    <p class="text-gray-600">辽宁省大连市旅顺口区樱桃产业园区88号</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">微信客服</h3>
+                        <div class="flex justify-center">
+                            <img src="https://picsum.photos/id/100/200/200" alt="微信客服二维码" class="w-48 h-48 object-cover rounded-lg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-cherry-darkRed text-white pt-16 pb-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center mb-6">
+                        <img src="https://picsum.photos/id/1080/50/50" alt="大连樱桃Logo" class="h-10 w-10 rounded-full mr-3">
+                        <span class="text-2xl font-bold">大连樱桃</span>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        专注大连樱桃全产业链服务，提供一件代发、专业代采、批量批发及樱桃衍生产品。
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors">
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors">
+                            <i class="fa fa-qq"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors">
+                            <i class="fa fa-youtube-play"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">快速链接</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#home" class="text-gray-300 hover:text-white transition-colors">首页</a></li>
+                        <li><a href="#products" class="text-gray-300 hover:text-white transition-colors">产品中心</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-white transition-colors">业务服务</a></li>
+                        <li><a href="#origin" class="text-gray-300 hover:text-white transition-colors">产地直供</a></li>
+                        <li><a href="#contact" class="text-gray-300 hover:text-white transition-colors">联系我们</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">业务服务</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#services" class="text-gray-300 hover:text-white transition-colors">一件代发</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-white transition-colors">专业代采</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-white transition-colors">批量批发</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-white transition-colors">衍生产品</a></li>
+                        <li><a href="#contact" class="text-gray-300 hover:text-white transition-colors">合作咨询</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">联系我们</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <i class="fa fa-phone mr-3 text-gray-300"></i>
+                            <span class="text-gray-300">400-123-4567</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-envelope mr-3 text-gray-300"></i>
+                            <span class="text-gray-300">info@daliancey.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-weixin mr-3 text-gray-300"></i>
+                            <span class="text-gray-300">daliancey01</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-map-marker mr-3 text-gray-300 mt-1"></i>
+                            <span class="text-gray-300">辽宁省大连市旅顺口区樱桃产业园区88号</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 text-sm mb-4 md:mb-0">
+                        © 2023 大连樱桃产业有限公司 版权所有 | 辽ICP备12345678号
+                    </p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">隐私政策</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">服务条款</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">网站地图</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="backToTop" class="fixed bottom-8 right-8 bg-cherry-red hover:bg-cherry-darkRed text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all opacity-0 invisible">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        const backToTop = document.getElementById('backToTop');
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        
+        window.addEventListener('scroll', function() {
+            // 导航栏效果
+            if (window.scrollY > 100) {
+                navbar.classList.add('py-2', 'shadow');
+                navbar.classList.remove('py-4');
+            } else {
+                navbar.classList.add('py-4');
+                navbar.classList.remove('py-2', 'shadow');
+            }
+            
+            // 返回顶部按钮
+            if (window.scrollY > 500) {
+                backToTop.classList.remove('opacity-0', 'invisible');
+                backToTop.classList.add('opacity-100', 'visible');
+            } else {
+                backToTop.classList.add('opacity-0', 'invisible');
+                backToTop.classList.remove('opacity-100', 'visible');
+            }
+            
+            // 滚动进度条
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            scrollIndicator.style.width = scrolled + "%";
         });
-    });
-</script>
+        
+        // 返回顶部功能
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // 移动端菜单
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        menuBtn.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                menuBtn.innerHTML = '<i class="fa fa-bars text-2xl"></i>';
+            } else {
+                menuBtn.innerHTML = '<i class="fa fa-times text-2xl"></i>';
+            }
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // 关闭移动端菜单
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    menuBtn.innerHTML = '<i class="fa fa-bars text-2xl"></i>';
+                }
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 产品分类标签切换
+        const productTabs = document.querySelectorAll('.product-tab');
+        const productCards = document.querySelectorAll('.product-card');
+        
+        productTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有标签的active类
+                productTabs.forEach(t => {
+                    t.classList.remove('active', 'bg-cherry-red', 'text-white');
+                    t.classList.add('bg-gray-200', 'hover:bg-gray-300');
+                });
+                
+                // 给当前标签添加active类
+                this.classList.add('active', 'bg-cherry-red', 'text-white');
+                this.classList.remove('bg-gray-200', 'hover:bg-gray-300');
+                
+                const category = this.getAttribute('data-category');
+                
+                // 显示对应的产品
+                productCards.forEach(card => {
+                    if (category === 'all' || card.getAttribute('data-category') === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // 服务标签页切换
+        const serviceTabs = document.querySelectorAll('.service-tab');
+        const serviceContents = document.querySelectorAll('.service-content');
+        
+        serviceTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有标签的active类
+                serviceTabs.forEach(t => {
+                    t.classList.remove('active', 'text-cherry-red', 'border-b-2', 'border-cherry-red');
+                    t.classList.add('text-gray-500', 'hover:text-gray-700');
+                });
+                
+                // 给当前标签添加active类
+                this.classList.add('active', 'text-cherry-red', 'border-b-2', 'border-cherry-red');
+                this.classList.remove('text-gray-500', 'hover:text-gray-700');
+                
+                const service = this.getAttribute('data-service');
+                
+                // 显示对应的内容
+                serviceContents.forEach(content => {
+                    content.classList.add('hidden');
+                    content.classList.remove('active');
+                });
+                
+                document.getElementById(`${service}-content`).classList.remove('hidden');
+                document.getElementById(`${service}-content`).classList.add('active');
+            });
+        });
+        
+        // 收获周期图表
+        const ctx = document.getElementById('harvestChart').getContext('2d');
+        const harvestChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['5月初', '5月中', '5月末', '6月初', '6月中', '6月末', '7月初'],
+                datasets: [
+                    {
+                        label: '早熟品种',
+                        data: [65, 80, 40, 10, 0, 0, 0],
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '中熟品种',
+                        data: [10, 60, 90, 90, 60, 20, 0],
+                        backgroundColor: 'rgba(231, 76, 60, 0.7)',
+                        borderColor: 'rgba(231, 76, 60, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '晚熟品种',
+                        data: [0, 0, 10, 40, 80, 90, 60],
+                        backgroundColor: 'rgba(241, 196, 15, 0.7)',
+                        borderColor: 'rgba(241, 196, 15, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: '大连樱桃各品种收获周期'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '产量占比 (%)'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 表单提交
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('咨询已提交，我们将尽快与您联系！');
+                form.reset();
+            });
+        }
+    </script>
 </body>
 </html>
